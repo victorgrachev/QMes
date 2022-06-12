@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "cross-env SUPABASE_URL=https://twcplcrvylijjxpspwke.supabase.co SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR3Y3BsY3J2eWxpamp4cHNwd2tlIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDUyNzE0ODEsImV4cCI6MTk2MDg0NzQ4MX0.QF_fRPPV2dImFYeySqRMLlFS4Yjd6H3Kn2Hks1JpIhs webpack --mode production",
+    "build": "cross-env SUPABASE_URL=$SUPABASE_URL SUPABASE_ANON_KEY=$SUPABASE_ANON_KEY webpack --mode production",
+    "start": "ts-node server.ts",
     "build:dev": "cross-env SUPABASE_URL=https://twcplcrvylijjxpspwke.supabase.co SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR3Y3BsY3J2eWxpamp4cHNwd2tlIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDUyNzE0ODEsImV4cCI6MTk2MDg0NzQ4MX0.QF_fRPPV2dImFYeySqRMLlFS4Yjd6H3Kn2Hks1JpIhs webpack --mode development",
-    "watch": "webpack --mode development --watch",
-    "start": "cross-env SUPABASE_URL=https://twcplcrvylijjxpspwke.supabase.co SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR3Y3BsY3J2eWxpamp4cHNwd2tlIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDUyNzE0ODEsImV4cCI6MTk2MDg0NzQ4MX0.QF_fRPPV2dImFYeySqRMLlFS4Yjd6H3Kn2Hks1JpIhs webpack serve --mode development"
+    "start:dev": "cross-env SUPABASE_URL=https://twcplcrvylijjxpspwke.supabase.co SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR3Y3BsY3J2eWxpamp4cHNwd2tlIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDUyNzE0ODEsImV4cCI6MTk2MDg0NzQ4MX0.QF_fRPPV2dImFYeySqRMLlFS4Yjd6H3Kn2Hks1JpIhs webpack serve --mode development"
   },
   "author": "vgrachev",
   "license": "ISC",
@@ -43,6 +43,8 @@
     "@babel/polyfill": "^7.12.1",
     "@supabase/supabase-js": "^1.30.3",
     "@types/react-transition-group": "^4.4.4",
+    "express": "^4.18.1",
+    "express-favicon": "^2.0.1",
     "materialize-css": "^1.0.0-rc.2",
     "object-assign": "^4.1.1",
     "react": "^17.0.2",
