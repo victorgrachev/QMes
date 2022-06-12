@@ -21,11 +21,13 @@ export const WrapperMain = styled.div`
 `;
 
 export const WrapperListChat = styled.div`
-  flex: 0 1 30%;
+  flex: 0 1 25%;
   height: 100%;
+  overflow: hidden;
 `;
 
 export const WrapperChatInfo = styled.div`
   flex: 1 1 auto;
   height: 100%;
+  overflow: hidden;
 `;

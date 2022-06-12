@@ -5,6 +5,7 @@ export const StyledPage = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 
   &.page-appear,
   &.page-enter {
