@@ -1,6 +1,7 @@
 import { Configuration, EnvironmentPlugin } from 'webpack';
 import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
 import { createTsLoader } from './tools/webpack/createTsLoader';
 import { createStyleLoader } from './tools/webpack/createStyleLoader';
 import 'webpack-dev-server';
@@ -27,6 +28,9 @@ const Config: Configuration = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'src/assets/index.html'),
+    }),
+    new CopyPlugin({
+      patterns: [{ from: path.resolve(__dirname, 'src/assets/favicon.svg'), to: path.resolve(__dirname, 'public') }],
     }),
     new EnvironmentPlugin(['SUPABASE_URL', 'SUPABASE_ANON_KEY']),
   ],
