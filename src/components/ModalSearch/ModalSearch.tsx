@@ -71,16 +71,16 @@ export const ModalSearch: React.FC<TPropsModalSearch> = props => {
       <div className="modal-content">
         <h4>Поиск пользователей по QIN</h4>
         <div className="row">
-          <div className="input-field col s2">
+          <div className="input-field col s12 m2">
             <InputQIN id="input_qin" type="number" ref={refInputValueQIN} />
             <label htmlFor="input_qin">QIN</label>
           </div>
-          <div className="input-field col s2">
+          <div className="input-field col s12 m2">
             <button className="waves-effect waves-light btn" onClick={handleSearchUser}>
               Поиск
             </button>
           </div>
-          <div className="input-field col s8 no-select">
+          <div className="input-field col s12 m8 no-select">
             <div className="container center-align">{contentResultSearch}</div>
           </div>
         </div>
