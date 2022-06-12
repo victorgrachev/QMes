@@ -12,6 +12,7 @@ export type TUser = TSystemColumn & {
 
 export type TChat = TSystemColumn & {
   chat_name: string;
+  chat_view: boolean;
 };
 
 export type TMessage = TSystemColumn & {

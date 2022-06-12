@@ -36,6 +36,7 @@ export interface IAuthEmail {
 export interface IChat {
   id: string;
   chatName: string;
+  chatView: boolean;
   avatar?: string;
 }
 

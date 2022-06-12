@@ -25,9 +25,30 @@ export function useChat(props: TPropsUseContact) {
     return () => ChatService.unsubscribeChat();
   }, [setChats]);
 
+  useEffect(() => {
+    if (chats && selectChat && !selectChat.chatView) {
+      ChatService.updateChatView(Number(selectChat.id));
+
+      setSelectChat({ ...selectChat, chatView: true });
+      setChats(
+        chats.map(chat => {
+          if (chat.id === selectChat.id) {
+            return {
+              ...chat,
+              chatView: true,
+            };
+          } else {
+            return { ...chat };
+          }
+        }),
+      );
+    }
+  }, [chats, selectChat, setChats, setSelectChat]);
+
   const createChat = async (participantChat: IUser) => {
     const { data, error } = await ChatService.createChat({
       chat_name: '',
+      chat_view: false,
     });
 
     if (!error && data) {

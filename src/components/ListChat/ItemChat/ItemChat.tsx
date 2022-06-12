@@ -44,7 +44,7 @@ const Info = styled.div`
 
 export const ItemChat: React.FC<TPropsContact> = props => {
   const {
-    chat: { id, chatName, avatar },
+    chat: { id, chatName, avatar, chatView },
     onClick,
   } = props;
 
@@ -58,6 +58,7 @@ export const ItemChat: React.FC<TPropsContact> = props => {
       <Info>
         <h6>{chatName}</h6>
       </Info>
+      {!chatView && <span className="new badge pulse" />}
     </MainItem>
   );
 };

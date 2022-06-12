@@ -59,6 +59,7 @@ export class ChatService {
       data: data?.map<IChat>(({ chat_id, chat_name }) => ({
         id: (chat_id as TChat).id.toString(),
         chatName: (chat_id as TChat).chat_name || chat_name,
+        chatView: (chat_id as TChat).chat_view,
       })),
       error,
     };
@@ -169,6 +170,7 @@ export class ChatService {
           const chat: IChat = {
             id: payload.new.chat_id.toString(),
             chatName: payload.new.chat_name,
+            chatView: false,
           };
 
           onSubscribe(chat);
@@ -183,6 +185,20 @@ export class ChatService {
   static unsubscribeChat() {
     ChatService.subscribeChatID &&
       supabase.removeSubscription(ChatService.subscribeChatID).then(() => (ChatService.subscribeChatID = null));
+  }
+
+  /**
+   * Обновить статус просмотра чата
+   * @param chatID
+   */
+  static async updateChatView(chatID: TChat['id']) {
+    const { data, error } = await supabase
+      .from<TChat>(ETableName.CHAT)
+      .update({ chat_view: true })
+      .match({ id: chatID })
+      .single();
+
+    return { data, error };
   }
 
   /**
