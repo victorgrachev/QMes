@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "cross-env SUPABASE_URL=$SUPABASE_URL SUPABASE_ANON_KEY=$SUPABASE_ANON_KEY webpack --mode production",
-    "start": "ts-node server.ts",
+    "start": "node server.js",
     "build:dev": "cross-env SUPABASE_URL=https://twcplcrvylijjxpspwke.supabase.co SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR3Y3BsY3J2eWxpamp4cHNwd2tlIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDUyNzE0ODEsImV4cCI6MTk2MDg0NzQ4MX0.QF_fRPPV2dImFYeySqRMLlFS4Yjd6H3Kn2Hks1JpIhs webpack --mode development",
     "start:dev": "cross-env SUPABASE_URL=https://twcplcrvylijjxpspwke.supabase.co SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR3Y3BsY3J2eWxpamp4cHNwd2tlIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDUyNzE0ODEsImV4cCI6MTk2MDg0NzQ4MX0.QF_fRPPV2dImFYeySqRMLlFS4Yjd6H3Kn2Hks1JpIhs webpack serve --mode development"
   },
@@ -32,6 +32,7 @@
     "prettier": "^2.5.1",
     "style-loader": "^3.3.1",
     "thread-loader": "^3.0.4",
+    "ts-node": "^10.8.1",
     "tslint": "^6.1.3",
     "typescript": "^4.5.5",
     "webpack": "^5.67.0",
@@ -51,8 +52,7 @@
     "react-hook-form": "^7.30.0",
     "react-router-dom": "^6.2.1",
     "react-transition-group": "^4.4.2",
-    "styled-components": "^5.3.5",
-    "ts-node": "^10.8.1"
+    "styled-components": "^5.3.5"
   },
   "resolutions": {
     "styled-components": "^5"

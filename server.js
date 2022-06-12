@@ -1,7 +1,6 @@
-import express from 'express';
-// @ts-ignore
-import favicon from 'express-favicon';
-import path from 'path';
+const express = require('express');
+const favicon = require('express-favicon');
+const path = require('path');
 
 const port = process.env.PORT || 8080;
 
