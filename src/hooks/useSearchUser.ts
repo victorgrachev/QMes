@@ -16,7 +16,7 @@ export function useSearchUser(userQIN?: IUser['qin']) {
       setLoading(true);
 
       ChatService.getUserByQIN(qin).then(({ data }) => {
-        data.id && setUser(data);
+        data && setUser(data);
         setLoading(false);
       });
     }

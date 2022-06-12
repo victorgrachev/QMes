@@ -47,7 +47,9 @@ export const Main = () => {
             <Loader />
           ) : (
             <>
-              <WrapperListChat>{chats && <ListChat chats={chats} onClickChat={handleClickChat} />}</WrapperListChat>
+              <WrapperListChat>
+                {chats && <ListChat chats={chats} selectChat={selectChat} onClickChat={handleClickChat} />}
+              </WrapperListChat>
               <WrapperChatInfo>
                 {selectChat && <ChatInfo messages={messages} onSendMessage={handleSendMessage} />}
               </WrapperChatInfo>

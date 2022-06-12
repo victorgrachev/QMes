@@ -1,35 +1,17 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import { SearchNav, TPropsSearchNav } from 'components/SearchNav';
 import { ItemChat } from './ItemChat';
 import { IChat } from 'models/interfaces';
+import { MainDiv, SearchNavWrapper, ListWrapper } from './styled';
 
 export type TPropsListChat = {
   chats: IChat[];
+  selectChat: IChat | null;
   onClickChat: (chatID: IChat['id']) => void;
 };
 
-const MainDiv = styled.div`
-  height: 100%;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-`;
-
-const SearchNavWrapper = styled.div`
-  flex: 0 0 auto;
-`;
-
-const ListWrapper = styled.div`
-  flex: 1 1 auto;
-  margin: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-  color: #fff;
-`;
-
 export const ListChat: React.FC<TPropsListChat> = props => {
-  const { chats, onClickChat } = props;
+  const { chats, onClickChat, selectChat } = props;
   const [filterChat, setFilterChat] = useState<typeof chats | null>(null);
 
   const handleChangeSearch: TPropsSearchNav['onChange'] = event => {
@@ -55,7 +37,7 @@ export const ListChat: React.FC<TPropsListChat> = props => {
         {
           <ul>
             {(filterChat ? filterChat : chats)?.map(chat => (
-              <ItemChat key={chat.id} chat={chat} onClick={onClickChat} />
+              <ItemChat key={chat.id} chat={chat} onClick={onClickChat} active={chat.id === selectChat?.id} />
             ))}
           </ul>
         }
