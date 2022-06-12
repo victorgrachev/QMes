@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Textarea, WrapperTextarea, WrapperButtonSend, MainInput } from './styled';
+import { Textarea, WrapperTextarea, WrapperButtonSend, WrapperInputMessage } from './styled';
 import { IMessage } from 'models/interfaces';
 
 export type TPropsInputMessage = {
@@ -25,7 +25,7 @@ export const InputMessage: React.FC<TPropsInputMessage> = ({ onSendMessage }) =>
   };
 
   return (
-    <MainInput>
+    <WrapperInputMessage>
       <WrapperTextarea>
         <Textarea
           id="icon_prefix2"
@@ -41,6 +41,6 @@ export const InputMessage: React.FC<TPropsInputMessage> = ({ onSendMessage }) =>
           <i className="material-icons right">send</i>
         </button>
       </WrapperButtonSend>
-    </MainInput>
+    </WrapperInputMessage>
   );
 };

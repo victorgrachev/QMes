@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { IMessage, IChat } from 'models/interfaces';
 import { ChatService } from 'service/ChatService';
 
-export function useMessages(chatID: IChat['id']) {
+export function useMessages(chatID?: IChat['id']) {
   const [allMessages, setAllMessages] = useState<IMessage[] | null>(null);
   const [messages, setMessages] = useState<IMessage[] | null>(null);
 

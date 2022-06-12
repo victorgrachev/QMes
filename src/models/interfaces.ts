@@ -15,10 +15,10 @@ export interface IResponseSupabase {
  * Пользователь
  */
 export interface IUser {
-  id?: string;
-  firstName?: string;
-  lastName?: string;
-  qin?: number;
+  id: string;
+  firstName: string;
+  lastName: string;
+  qin: number;
   avatar?: string;
 }
 
@@ -34,13 +34,16 @@ export interface IAuthEmail {
  * Чат
  */
 export interface IChat {
-  id?: string;
-  chatName?: string;
+  id: string;
+  chatName: string;
   avatar?: string;
 }
 
+/**
+ * Сообщение
+ */
 export interface IMessage {
-  id?: string;
+  id: string;
   chatID: string;
   textValue: string;
   incoming: boolean;

@@ -2,17 +2,10 @@ import React from 'react';
 import { HashRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { Main } from 'pages/Main';
 import { Login } from 'pages/Login';
-import { AppRoute } from './const';
-import { useSession } from './hooks/useSession';
-import styled from 'styled-components';
+import { AppRoute } from 'const';
+import { useSession } from 'hooks/useSession';
 import { Registration } from 'pages/Registration';
-
-const AppWrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  min-width: 300px;
-`;
+import { AppWrapper } from 'styled';
 
 export default function App() {
   const session = useSession();

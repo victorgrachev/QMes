@@ -1,6 +1,6 @@
 import { supabase } from '../client';
 import { IAuthEmail, IUser } from 'models/interfaces';
-import { TUser } from '../types';
+import { TSystemColumn, TUser } from '../types';
 import { ETableName } from '../enums';
 
 const authClient = supabase.auth;
@@ -27,7 +27,7 @@ export class AuthService {
     if (!authResult.error && authResult.user) {
       const { firstName, lastName } = userData;
 
-      const user: TUser = {
+      const user: Omit<TUser, keyof TSystemColumn> = {
         auth_id: authResult.user.id,
         first_name: firstName,
         last_name: lastName,

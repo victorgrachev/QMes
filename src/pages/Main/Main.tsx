@@ -16,7 +16,7 @@ export const Main = () => {
   const { messages, sendMessage } = useMessages(selectChat?.id);
 
   const handleCreateChat: TPropsModalSearch['onCreateChat'] = (participantChat, onCreated) => {
-    createChat(participantChat).then(({ data, error }) => {
+    createChat(participantChat).then(({ error }) => {
       onCreated();
 
       if (error) {
@@ -28,7 +28,7 @@ export const Main = () => {
   };
 
   const handleClickChat: TPropsListChat['onClickChat'] = chatID => {
-    setSelectChat(chats?.find(chat => chat.id === chatID));
+    setSelectChat(chats?.find(chat => chat.id === chatID) || null);
   };
 
   const handleSendMessage: TPropsChatInfo['onSendMessage'] = textValue => {

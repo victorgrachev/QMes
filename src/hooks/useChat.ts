@@ -8,14 +8,14 @@ type TPropsUseContact = {
 
 export function useChat(props: TPropsUseContact) {
   const { onLoading } = props;
-  const [chats, setChats] = useState<IChat[] | null>();
-  const [selectChat, setSelectChat] = useState<IChat>();
+  const [chats, setChats] = useState<IChat[] | null>(null);
+  const [selectChat, setSelectChat] = useState<IChat | null>(null);
 
   useEffect(() => {
     onLoading?.(true);
 
     ChatService.getChats().then(({ data }) => {
-      setChats(data);
+      data && setChats(data);
       onLoading?.(false);
     });
   }, [setChats]);
@@ -26,19 +26,19 @@ export function useChat(props: TPropsUseContact) {
   }, [setChats]);
 
   const createChat = async (participantChat: IUser) => {
-    const chat = await ChatService.createChat({
+    const { data, error } = await ChatService.createChat({
       chat_name: '',
     });
 
-    if (!chat.error) {
+    if (!error && data) {
       await ChatService.createParticipant({
-        chat_id: chat?.data?.id,
+        chat_id: data.id,
         user_id: Number(participantChat.id),
         chat_name: `${participantChat.firstName} ${participantChat.lastName}`,
       });
     }
 
-    return chat;
+    return { data, error };
   };
 
   return { chats, createChat, selectChat, setSelectChat };

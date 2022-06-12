@@ -1,5 +1,12 @@
 import styled from 'styled-components';
 
+export const WrapperInputMessage = styled.div`
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+`;
+
 export const MainInput = styled.div`
   display: flex;
   justify-content: space-around;

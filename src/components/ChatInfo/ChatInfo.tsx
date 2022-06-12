@@ -1,7 +1,7 @@
 import React from 'react';
 import { MessageList } from './MessageList';
 import { InputMessage } from './InputMessage';
-import { MainChat, WrapperInputMessage, WrapperMessageList } from './styled';
+import { MainChat } from './styled';
 import { IMessage } from 'models/interfaces';
 
 export type TPropsChatInfo = {
@@ -14,12 +14,8 @@ export const ChatInfo: React.FC<TPropsChatInfo> = props => {
 
   return (
     <MainChat>
-      <WrapperMessageList>
-        <MessageList messages={messages} />
-      </WrapperMessageList>
-      <WrapperInputMessage>
-        <InputMessage onSendMessage={onSendMessage} />
-      </WrapperInputMessage>
+      <MessageList messages={messages} />
+      <InputMessage onSendMessage={onSendMessage} />
     </MainChat>
   );
 };
