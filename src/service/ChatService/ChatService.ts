@@ -30,7 +30,7 @@ export class ChatService {
   static async getUserByQIN(searchQIN: TUser['qin']) {
     const { data, error } = await supabase.from<TUser>(ETableName.USER).select('*').eq('qin', searchQIN).single();
 
-    if (!data) return { data, error };
+    if (!data) return { data: null, error };
 
     const { id, qin, first_name, last_name } = data;
 

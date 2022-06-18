@@ -3,7 +3,7 @@ import { IUser } from 'models/interfaces';
 import { ChatService } from 'service/ChatService';
 
 export function useSearchUser(userQIN?: IUser['qin']) {
-  const [user, setUser] = useState<IUser>();
+  const [user, setUser] = useState<IUser | null>(null);
   const [qin, setQin] = useState(userQIN);
   const [loading, setLoading] = useState<boolean>();
 
@@ -16,7 +16,7 @@ export function useSearchUser(userQIN?: IUser['qin']) {
       setLoading(true);
 
       ChatService.getUserByQIN(qin).then(({ data }) => {
-        data && setUser(data);
+        setUser(data);
         setLoading(false);
       });
     }
