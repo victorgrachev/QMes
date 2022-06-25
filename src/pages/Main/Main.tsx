@@ -4,11 +4,11 @@ import { PageWrapper } from 'components/PageWrapper';
 import { ListChat, TPropsListChat } from 'components/ListChat';
 import { ModalSearch, TPropsModalSearch } from 'components/ModalSearch';
 import { useChat } from 'hooks/useChat';
-import { Loader } from 'components/Loader';
 import { ChatInfo, TPropsChatInfo } from 'components/ChatInfo';
 import { useMessages } from 'hooks/useMessages';
-import { StyledMainPage, WrapperMain, WrapperNavbar, WrapperListChat, WrapperChatInfo } from './styled';
+import { StyledMainPage, WrapperMain } from './styled';
 import M from 'materialize-css';
+import { LoaderPage } from 'components/LoaderPage';
 
 export const Main = () => {
   const [isPageLoading, setIsPageLoading] = useState(false);
@@ -39,23 +39,15 @@ export const Main = () => {
     <PageWrapper>
       <ModalSearch onCreateChat={handleCreateChat} />
       <StyledMainPage>
-        <WrapperNavbar>
-          <NavBar />
-        </WrapperNavbar>
-        <WrapperMain>
-          {isPageLoading ? (
-            <Loader />
-          ) : (
-            <>
-              <WrapperListChat>
-                {chats && <ListChat chats={chats} selectChat={selectChat} onClickChat={handleClickChat} />}
-              </WrapperListChat>
-              <WrapperChatInfo>
-                {selectChat && <ChatInfo messages={messages} onSendMessage={handleSendMessage} />}
-              </WrapperChatInfo>
-            </>
-          )}
-        </WrapperMain>
+        <NavBar />
+        {isPageLoading ? (
+          <LoaderPage />
+        ) : (
+          <WrapperMain>
+            {chats && <ListChat chats={chats} selectChat={selectChat} onClickChat={handleClickChat} />}
+            {selectChat && <ChatInfo messages={messages} onSendMessage={handleSendMessage} />}
+          </WrapperMain>
+        )}
       </StyledMainPage>
     </PageWrapper>
   );

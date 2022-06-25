@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const MainDiv = styled.div`
+  flex: 0 1 25%;
   height: 100%;
   overflow: hidden;
   display: flex;

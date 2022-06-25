@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useAuth } from 'hooks/useAuth';
 import M from 'materialize-css';
+import { Nav } from './styled';
 
 export const NavBar = () => {
   const { handleSighOut } = useAuth();
@@ -14,7 +15,7 @@ export const NavBar = () => {
   }, []);
 
   return (
-    <nav className="no-select top-nav">
+    <Nav className="no-select top-nav">
       <div className="nav-wrapper teal darken-1 z-depth-3">
         <a data-target="slide-out" className="sidenav-overlay">
           <i className="material-icons">menu</i>
@@ -45,6 +46,6 @@ export const NavBar = () => {
           </ul>
         </ul>
       </div>
-    </nav>
+    </Nav>
   );
 };
