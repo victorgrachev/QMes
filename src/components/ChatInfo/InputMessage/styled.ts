@@ -7,12 +7,6 @@ export const WrapperInputMessage = styled.div`
   align-items: flex-end;
 `;
 
-export const MainInput = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: flex-end;
-`;
-
 export const WrapperTextarea = styled.div`
   width: 80%;
   overflow: hidden;
