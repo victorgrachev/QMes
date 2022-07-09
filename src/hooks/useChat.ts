@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 export function useChat() {
   const [isLoading, setIsLoading] = useState(false);
   const [chats, setChats] = useState<IChat[] | null>(null);
-  const [selectChat, setSelectChat] = useState<IChat | null>(null);
+  const [selectedChat, setSelectedChat] = useState<IChat | null>(null);
 
   useEffect(() => {
     setIsLoading(true);
@@ -21,15 +21,15 @@ export function useChat() {
   }, [setChats]);
 
   useEffect(() => {
-    if (selectChat && !selectChat.chatView) {
-      ChatService.updateChatView(Number(selectChat.id));
+    if (selectedChat && !selectedChat.chatView) {
+      ChatService.updateChatView(Number(selectedChat.id));
 
-      setSelectChat({ ...selectChat, chatView: true });
+      setSelectedChat({ ...selectedChat, chatView: true });
       setChats(
         prevChats =>
           prevChats &&
           prevChats.map(chat => {
-            if (chat.id === selectChat.id) {
+            if (chat.id === selectedChat.id) {
               return {
                 ...chat,
                 chatView: true,
@@ -40,7 +40,7 @@ export function useChat() {
           }),
       );
     }
-  }, [selectChat, setChats, setSelectChat]);
+  }, [selectedChat, setChats, setSelectedChat]);
 
   const createChat = async (participantChat: IUser) => {
     const { data, error } = await ChatService.createChat({
@@ -59,5 +59,7 @@ export function useChat() {
     return { data, error };
   };
 
-  return { chats, createChat, selectChat, setSelectChat, isLoading };
+  const selectChat = (chat: IChat) => setSelectedChat(chat);
+
+  return { chats, createChat, selectedChat, selectChat, isLoading };
 }

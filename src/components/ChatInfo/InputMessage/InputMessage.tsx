@@ -12,8 +12,10 @@ export const InputMessage: React.FC<TPropsInputMessage> = ({ onSendMessage }) =>
   const handleChange: React.ChangeEventHandler<HTMLTextAreaElement> = event => setMessage(event.target.value);
 
   const handleSendMessage = () => {
-    setMessage('');
-    onSendMessage(message);
+    if (message) {
+      setMessage('');
+      onSendMessage(message);
+    }
   };
 
   const handleKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement> = event => {

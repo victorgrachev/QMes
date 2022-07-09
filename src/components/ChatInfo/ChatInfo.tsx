@@ -6,15 +6,15 @@ import { IChat } from 'models/interfaces';
 import { useMessages } from 'hooks/useMessages';
 
 export type TPropsChatInfo = {
-  selectChat: IChat;
+  selectedChat: IChat;
 };
 
 export const ChatInfo: React.FC<TPropsChatInfo> = props => {
-  const { selectChat } = props;
-  const { messages, sendMessage } = useMessages(selectChat?.id);
+  const { selectedChat } = props;
+  const { messages, sendMessage } = useMessages(selectedChat?.id);
 
   const handleSendMessage = (textValue: string) => {
-    sendMessage(selectChat?.id, textValue);
+    sendMessage(selectedChat?.id, textValue);
   };
 
   return (

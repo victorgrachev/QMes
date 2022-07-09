@@ -3,10 +3,10 @@ import M from 'materialize-css';
 import { useSearchUser } from 'hooks/useSearchUser';
 import { Loader } from 'components/Loader';
 import { InputQIN } from './styled';
-import { IUser } from 'models/interfaces';
+import { useChat } from 'hooks/useChat';
 
 export type TPropsModalSearch = {
-  onCreateChat?: (participantChat: IUser, onCreated: () => void) => void;
+  onCreateChat: ReturnType<typeof useChat>['createChat'];
 };
 
 export const ModalSearch: React.FC<TPropsModalSearch> = props => {
@@ -25,8 +25,14 @@ export const ModalSearch: React.FC<TPropsModalSearch> = props => {
     if (searchUser) {
       setLoadAddContact(true);
 
-      onCreateChat?.(searchUser, () => {
+      onCreateChat(searchUser).then(({ error }) => {
         setLoadAddContact(false);
+
+        if (error) {
+          M.toast({ html: error.message });
+        } else {
+          M.toast({ html: `Создан чат ${searchUser.firstName} ${searchUser.lastName}` });
+        }
       });
     }
   };

@@ -5,17 +5,18 @@ import { MainItem, Info, Avatar } from './styled';
 export type TPropsItemChat = {
   chat: IChat;
   active: boolean;
-  onClick: (chatID: IChat['id']) => void;
+  onClick: (chat: IChat) => void;
 };
 
 export const ItemChat: React.FC<TPropsItemChat> = props => {
   const {
-    chat: { id, chatName, avatar, chatView },
+    chat,
+    chat: { chatName, avatar, chatView },
     active,
     onClick,
   } = props;
 
-  const handleClick = () => onClick(id);
+  const handleClick = () => onClick(chat);
 
   return (
     <MainItem className="no-select" onClick={handleClick} active={active}>

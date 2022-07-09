@@ -1,33 +1,16 @@
 import React, { useState } from 'react';
 import { NavBar } from 'components/NavBar';
 import { PageWrapper } from 'components/PageWrapper';
-import { ListChat, TPropsListChat } from 'components/ListChat';
-import { ModalSearch, TPropsModalSearch } from 'components/ModalSearch';
+import { ListChat } from 'components/ListChat';
+import { ModalSearch } from 'components/ModalSearch';
 import { useChat } from 'hooks/useChat';
 import { ChatInfo } from 'components/ChatInfo';
 import { StyledMainPage, WrapperMain } from './styled';
-import M from 'materialize-css';
 import { LoaderPage } from 'components/LoaderPage';
 
 export const Main = () => {
-  const { chats, createChat, selectChat, setSelectChat, isLoading } = useChat();
+  const { chats, createChat, selectedChat, selectChat, isLoading } = useChat();
   const [isOpenMobileMenu, setIsOpenMobileMenu] = useState(false);
-
-  const handleCreateChat: TPropsModalSearch['onCreateChat'] = (participantChat, onCreated) => {
-    createChat(participantChat).then(({ error }) => {
-      onCreated();
-
-      if (error) {
-        M.toast({ html: error.message });
-      } else {
-        M.toast({ html: `Создан чат ${participantChat.firstName} ${participantChat.lastName}` });
-      }
-    });
-  };
-
-  const handleClickChat: TPropsListChat['onClickChat'] = chatID => {
-    setSelectChat(chats?.find(chat => chat.id === chatID) || null);
-  };
 
   const handleClickMobileMenu = () => {
     setIsOpenMobileMenu(!isOpenMobileMenu);
@@ -35,7 +18,7 @@ export const Main = () => {
 
   return (
     <PageWrapper>
-      <ModalSearch onCreateChat={handleCreateChat} />
+      <ModalSearch onCreateChat={createChat} />
       <StyledMainPage>
         <NavBar onClickMobileMenu={handleClickMobileMenu} />
         {isLoading ? (
@@ -45,12 +28,12 @@ export const Main = () => {
             {chats && (
               <ListChat
                 chats={chats}
-                selectChat={selectChat}
-                onClickChat={handleClickChat}
+                selectedChat={selectedChat}
+                onClickChat={selectChat}
                 openMobileMenu={isOpenMobileMenu}
               />
             )}
-            {selectChat && <ChatInfo selectChat={selectChat} />}
+            {selectedChat && <ChatInfo selectedChat={selectedChat} />}
           </WrapperMain>
         )}
       </StyledMainPage>
