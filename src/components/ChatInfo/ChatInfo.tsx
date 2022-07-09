@@ -1,21 +1,26 @@
 import React from 'react';
 import { MessageList } from './MessageList';
 import { InputMessage } from './InputMessage';
-import { MainChat } from './styled';
-import { IMessage } from 'models/interfaces';
+import { MainChatInfo } from './styled';
+import { IChat } from 'models/interfaces';
+import { useMessages } from 'hooks/useMessages';
 
 export type TPropsChatInfo = {
-  messages: IMessage[] | null;
-  onSendMessage: (textValue: IMessage['textValue']) => void;
+  selectChat: IChat;
 };
 
 export const ChatInfo: React.FC<TPropsChatInfo> = props => {
-  const { messages, onSendMessage } = props;
+  const { selectChat } = props;
+  const { messages, sendMessage } = useMessages(selectChat?.id);
+
+  const handleSendMessage = (textValue: string) => {
+    sendMessage(selectChat?.id, textValue);
+  };
 
   return (
-    <MainChat>
+    <MainChatInfo>
       <MessageList messages={messages} />
-      <InputMessage onSendMessage={onSendMessage} />
-    </MainChat>
+      <InputMessage onSendMessage={handleSendMessage} />
+    </MainChatInfo>
   );
 };

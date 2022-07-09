@@ -2,48 +2,45 @@ import { IChat, IUser } from 'models/interfaces';
 import { ChatService } from 'service/ChatService';
 import { useEffect, useState } from 'react';
 
-type TPropsUseContact = {
-  onLoading?: (loading: boolean) => void;
-};
-
-export function useChat(props: TPropsUseContact) {
-  const { onLoading } = props;
+export function useChat() {
+  const [isLoading, setIsLoading] = useState(false);
   const [chats, setChats] = useState<IChat[] | null>(null);
   const [selectChat, setSelectChat] = useState<IChat | null>(null);
 
   useEffect(() => {
-    onLoading?.(true);
+    setIsLoading(true);
 
-    ChatService.getChats().then(({ data }) => {
-      data && setChats(data);
-      onLoading?.(false);
-    });
-  }, [setChats]);
+    Promise.all([
+      ChatService.getChats().then(({ data }) => {
+        data && setChats(data);
+      }),
+      ChatService.subscribeChat(chat => setChats(oldChat => [...(oldChat || []), chat])),
+    ]).then(() => setIsLoading(false));
 
-  useEffect(() => {
-    ChatService.subscribeChat(chat => setChats(oldChat => [...(oldChat || []), chat]));
     return () => ChatService.unsubscribeChat();
   }, [setChats]);
 
   useEffect(() => {
-    if (chats && selectChat && !selectChat.chatView) {
+    if (selectChat && !selectChat.chatView) {
       ChatService.updateChatView(Number(selectChat.id));
 
       setSelectChat({ ...selectChat, chatView: true });
       setChats(
-        chats.map(chat => {
-          if (chat.id === selectChat.id) {
-            return {
-              ...chat,
-              chatView: true,
-            };
-          } else {
-            return { ...chat };
-          }
-        }),
+        prevChats =>
+          prevChats &&
+          prevChats.map(chat => {
+            if (chat.id === selectChat.id) {
+              return {
+                ...chat,
+                chatView: true,
+              };
+            } else {
+              return { ...chat };
+            }
+          }),
       );
     }
-  }, [chats, selectChat, setChats, setSelectChat]);
+  }, [selectChat, setChats, setSelectChat]);
 
   const createChat = async (participantChat: IUser) => {
     const { data, error } = await ChatService.createChat({
@@ -62,5 +59,5 @@ export function useChat(props: TPropsUseContact) {
     return { data, error };
   };
 
-  return { chats, createChat, selectChat, setSelectChat };
+  return { chats, createChat, selectChat, setSelectChat, isLoading };
 }

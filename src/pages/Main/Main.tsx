@@ -4,16 +4,14 @@ import { PageWrapper } from 'components/PageWrapper';
 import { ListChat, TPropsListChat } from 'components/ListChat';
 import { ModalSearch, TPropsModalSearch } from 'components/ModalSearch';
 import { useChat } from 'hooks/useChat';
-import { ChatInfo, TPropsChatInfo } from 'components/ChatInfo';
-import { useMessages } from 'hooks/useMessages';
+import { ChatInfo } from 'components/ChatInfo';
 import { StyledMainPage, WrapperMain } from './styled';
 import M from 'materialize-css';
 import { LoaderPage } from 'components/LoaderPage';
 
 export const Main = () => {
-  const [isPageLoading, setIsPageLoading] = useState(false);
-  const { chats, createChat, selectChat, setSelectChat } = useChat({ onLoading: setIsPageLoading });
-  const { messages, sendMessage } = useMessages(selectChat?.id);
+  const { chats, createChat, selectChat, setSelectChat, isLoading } = useChat();
+  const [isOpenMobileMenu, setIsOpenMobileMenu] = useState(false);
 
   const handleCreateChat: TPropsModalSearch['onCreateChat'] = (participantChat, onCreated) => {
     createChat(participantChat).then(({ error }) => {
@@ -31,21 +29,28 @@ export const Main = () => {
     setSelectChat(chats?.find(chat => chat.id === chatID) || null);
   };
 
-  const handleSendMessage: TPropsChatInfo['onSendMessage'] = textValue => {
-    sendMessage(selectChat?.id, textValue);
+  const handleClickMobileMenu = () => {
+    setIsOpenMobileMenu(!isOpenMobileMenu);
   };
 
   return (
     <PageWrapper>
       <ModalSearch onCreateChat={handleCreateChat} />
       <StyledMainPage>
-        <NavBar />
-        {isPageLoading ? (
+        <NavBar onClickMobileMenu={handleClickMobileMenu} />
+        {isLoading ? (
           <LoaderPage />
         ) : (
           <WrapperMain>
-            {chats && <ListChat chats={chats} selectChat={selectChat} onClickChat={handleClickChat} />}
-            {selectChat && <ChatInfo messages={messages} onSendMessage={handleSendMessage} />}
+            {chats && (
+              <ListChat
+                chats={chats}
+                selectChat={selectChat}
+                onClickChat={handleClickChat}
+                openMobileMenu={isOpenMobileMenu}
+              />
+            )}
+            {selectChat && <ChatInfo selectChat={selectChat} />}
           </WrapperMain>
         )}
       </StyledMainPage>

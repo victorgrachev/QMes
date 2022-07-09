@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Textarea, WrapperTextarea, WrapperButtonSend, WrapperInputMessage } from './styled';
 import { IMessage } from 'models/interfaces';
 
@@ -8,7 +8,6 @@ export type TPropsInputMessage = {
 
 export const InputMessage: React.FC<TPropsInputMessage> = ({ onSendMessage }) => {
   const [message, setMessage] = useState('');
-  const refButtonSend = useRef<HTMLButtonElement | null>(null);
 
   const handleChange: React.ChangeEventHandler<HTMLTextAreaElement> = event => setMessage(event.target.value);
 
@@ -20,7 +19,7 @@ export const InputMessage: React.FC<TPropsInputMessage> = ({ onSendMessage }) =>
   const handleKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement> = event => {
     if (event.code.toUpperCase() === 'ENTER') {
       event.preventDefault();
-      refButtonSend.current?.click();
+      handleSendMessage();
     }
   };
 
@@ -37,7 +36,7 @@ export const InputMessage: React.FC<TPropsInputMessage> = ({ onSendMessage }) =>
         />
       </WrapperTextarea>
       <WrapperButtonSend>
-        <button ref={refButtonSend} className="btn waves-effect waves-light" onClick={handleSendMessage}>
+        <button className="btn waves-effect waves-light" onClick={handleSendMessage}>
           <i className="material-icons right">send</i>
         </button>
       </WrapperButtonSend>

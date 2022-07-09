@@ -8,10 +8,11 @@ export type TPropsListChat = {
   chats: IChat[];
   selectChat: IChat | null;
   onClickChat: (chatID: IChat['id']) => void;
+  openMobileMenu: boolean;
 };
 
 export const ListChat: React.FC<TPropsListChat> = props => {
-  const { chats, onClickChat, selectChat } = props;
+  const { chats, onClickChat, selectChat, openMobileMenu } = props;
   const [filterChat, setFilterChat] = useState<typeof chats | null>(null);
 
   const handleChangeSearch: TPropsSearchNav['onChange'] = event => {
@@ -29,7 +30,7 @@ export const ListChat: React.FC<TPropsListChat> = props => {
   };
 
   return (
-    <MainDiv>
+    <MainDiv openMobileMenu={openMobileMenu}>
       <SearchNavWrapper>
         <SearchNav onChange={handleChangeSearch} onClose={handleCloseSearch} />
       </SearchNavWrapper>

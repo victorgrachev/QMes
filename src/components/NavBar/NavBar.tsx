@@ -1,9 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import { useAuth } from 'hooks/useAuth';
 import M from 'materialize-css';
-import { Nav } from './styled';
+import { Nav, MobileMenu } from './styled';
 
-export const NavBar = () => {
+type TPropsNavBar = {
+  onClickMobileMenu: () => void;
+};
+
+export const NavBar: React.FC<TPropsNavBar> = props => {
+  const { onClickMobileMenu } = props;
   const { handleSighOut } = useAuth();
   const refDropdownTrigger = useRef<HTMLAnchorElement>(null);
 
@@ -14,12 +19,17 @@ export const NavBar = () => {
     }
   }, []);
 
+  const handleClickMenu: React.MouseEventHandler<HTMLAnchorElement> = event => {
+    event.preventDefault();
+    onClickMobileMenu();
+  };
+
   return (
     <Nav className="no-select top-nav">
       <div className="nav-wrapper teal darken-1 z-depth-3">
-        <a data-target="slide-out" className="sidenav-overlay">
+        <MobileMenu href="#" className="sidenav-trigger" onClick={handleClickMenu}>
           <i className="material-icons">menu</i>
-        </a>
+        </MobileMenu>
         <a className="brand-logo center">
           <i className="large material-icons">flash_on</i>
           <span className="flow-text">QMes</span>
