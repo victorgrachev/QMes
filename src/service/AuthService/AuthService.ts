@@ -21,7 +21,7 @@ export class AuthService {
    * @param userData
    * @param authData
    */
-  static async signUp(userData: IUser, authData: IAuthEmail) {
+  static async signUp(userData: Pick<IUser, 'firstName' | 'lastName'>, authData: IAuthEmail) {
     const authResult = await authClient.signUp(authData);
 
     if (!authResult.error && authResult.user) {

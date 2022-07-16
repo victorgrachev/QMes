@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { Form, TPropsForm } from 'components/Form';
-import { AppRoute } from 'const';
 import { useNavigate } from 'react-router-dom';
 import { PageWrapper } from 'components/PageWrapper';
 import { useAuth } from 'hooks/useAuth';
@@ -56,7 +55,7 @@ export const Registration: React.FC = () => {
         {
           label: 'Вход',
           colNumber: 6,
-          onClick: () => navigate(AppRoute.NOT_AUTH.SIGN_IN.path),
+          onClick: () => navigate('/main'),
         },
       ],
       submitButton: {

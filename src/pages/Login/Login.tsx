@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import { useAuth } from 'hooks/useAuth';
 import { Form, TPropsForm } from 'components/Form';
 import { useNavigate } from 'react-router-dom';
-import { AppRoute } from 'const';
 import { PageWrapper } from 'components/PageWrapper';
 
 type TLoginFormData = {
@@ -43,7 +42,7 @@ export const Login: React.FC = () => {
         {
           label: 'Регистрация',
           colNumber: 12,
-          onClick: () => navigate(AppRoute.NOT_AUTH.SIGN_UP.path),
+          onClick: () => navigate('/signup'),
         },
       ],
       submitButton: {
