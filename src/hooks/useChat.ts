@@ -1,8 +1,9 @@
 import { IChat, IUser } from 'models/interfaces';
-import { ChatService } from 'service/ChatService';
 import { useEffect, useState } from 'react';
+import { useServices } from './useServices';
 
 export function useChat() {
+  const { ChatService } = useServices();
   const [isLoading, setIsLoading] = useState(false);
   const [chats, setChats] = useState<IChat[] | null>(null);
   const [selectedChat, setSelectedChat] = useState<IChat | null>(null);

@@ -40,6 +40,7 @@ const Config: Configuration = {
     },
     port: 3030,
   },
+  devtool: 'source-map',
 };
 
 export default Config;

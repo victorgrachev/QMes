@@ -3,16 +3,16 @@ import { IAuthEmail, IUser } from 'models/interfaces';
 import { TSystemColumn, TUser } from '../types';
 import { ETableName } from '../enums';
 
-const authClient = supabase.auth;
-
 export class AuthService {
+  constructor(private authClient = supabase.auth) {}
+
   /**
    * Авторизация пользователя
    *
    * @param authData
    */
-  static async signIn(authData: IAuthEmail) {
-    return await authClient.signIn(authData);
+  async signIn(authData: IAuthEmail) {
+    return await this.authClient.signIn(authData);
   }
 
   /**
@@ -21,8 +21,8 @@ export class AuthService {
    * @param userData
    * @param authData
    */
-  static async signUp(userData: Pick<IUser, 'firstName' | 'lastName'>, authData: IAuthEmail) {
-    const authResult = await authClient.signUp(authData);
+  async signUp(userData: Pick<IUser, 'firstName' | 'lastName'>, authData: IAuthEmail) {
+    const authResult = await this.authClient.signUp(authData);
 
     if (!authResult.error && authResult.user) {
       const { firstName, lastName } = userData;
@@ -44,14 +44,14 @@ export class AuthService {
   /**
    * Покинуть текущую сессию
    */
-  static signOut() {
-    return authClient.signOut();
+  signOut() {
+    return this.authClient.signOut();
   }
 
   /**
    * Получить информацию об авторизации
    */
-  static getAuthInfo() {
-    return authClient;
+  getAuthInfo() {
+    return this.authClient;
   }
 }

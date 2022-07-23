@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { AuthService } from 'service/AuthService';
+import { useServices } from './useServices';
 
 export function useSession() {
+  const { AuthService } = useServices();
   const auth = AuthService.getAuthInfo();
 
   const [session, setSession] = useState(auth.session());
@@ -12,7 +13,7 @@ export function useSession() {
     return () => {
       stateSession.data?.unsubscribe?.();
     };
-  }, [setSession]);
+  }, []);
 
   return session;
 }

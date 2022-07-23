@@ -6,28 +6,31 @@ import { IChat, IMessage, IUser } from 'models/interfaces';
 import { RealtimeSubscription } from '@supabase/supabase-js';
 
 export class ChatService {
-  private static currentUserInfo: TUser | null = null;
-  private static subscribeMessageID: RealtimeSubscription | null = null;
-  private static subscribeChatID: RealtimeSubscription | null = null;
+  private currentUserInfo: TUser | null = null;
+  private subscribeMessageID: RealtimeSubscription | null = null;
+  private subscribeChatID: RealtimeSubscription | null = null;
+
+  constructor(private authService: AuthService) {}
+
   /**
    * Получить id пользователя
    * @private
    */
-  private static async getCurrentUserInfo() {
-    if (!ChatService.currentUserInfo) {
-      const currentUser = AuthService.getAuthInfo().user()!;
+  private async getCurrentUserInfo() {
+    if (!this.currentUserInfo) {
+      const currentUser = this.authService.getAuthInfo().user()!;
       const { data } = await supabase.from<TUser>(ETableName.USER).select('*').eq('auth_id', currentUser.id).single();
-      ChatService.currentUserInfo = data!;
+      this.currentUserInfo = data;
     }
 
-    return ChatService.currentUserInfo;
+    return this.currentUserInfo;
   }
 
   /**
    * Получить пользователя по QIN
    * @param searchQIN
    */
-  static async getUserByQIN(searchQIN: TUser['qin']) {
+  async getUserByQIN(searchQIN: TUser['qin']) {
     const { data, error } = await supabase.from<TUser>(ETableName.USER).select('*').eq('qin', searchQIN).single();
 
     if (!data) return { data: null, error };
@@ -47,13 +50,13 @@ export class ChatService {
   /**
    * Получить чаты пользователя
    */
-  static async getChats() {
-    const currentUserInfo = await ChatService.getCurrentUserInfo();
+  async getChats() {
+    const currentUserInfo = await this.getCurrentUserInfo();
 
     const { data, error } = await supabase
       .from<TParticipant>(ETableName.PARTICIPANT)
       .select('chat_id!inner(*), chat_name')
-      .eq('user_id', currentUserInfo.id);
+      .eq('user_id', currentUserInfo?.id!);
 
     return {
       data: data?.map<IChat>(({ chat_id, chat_name }) => ({
@@ -66,41 +69,39 @@ export class ChatService {
   }
 
   /**
-   * Получить сообщения из чатов
+   * Получить сообщения из чата
+   *
    * @param chatID
    */
-  static async getMessage() {
-    const currentUserInfo = await ChatService.getCurrentUserInfo();
+  async getMessages(
+    chatID: TChat['id'],
+    { limit, calcCountMessage = false }: { limit: number; calcCountMessage?: boolean },
+  ) {
+    const currentUserInfo = await this.getCurrentUserInfo();
 
-    const { data: chats, error } = await supabase
-      .from<TParticipant>(ETableName.PARTICIPANT)
-      .select('chat_id(*)')
-      .eq('user_id', currentUserInfo.id);
+    const { data, error, count } = await supabase
+      .from<TMessage>(ETableName.MESSAGE)
+      .select('*', calcCountMessage ? { count: 'estimated' } : {})
+      .eq('chat_id', chatID)
+      .order('created_at', { ascending: false })
+      .limit(limit);
 
-    const resultMessage: IMessage[] = [];
+    const resultMessages: IMessage[] = [];
 
-    if (chats) {
-      for (const chat of chats) {
-        const chatInfo = chat.chat_id as TChat;
-
-        const { data: message } = await supabase
-          .from<TMessage>(ETableName.MESSAGE)
-          .select('*')
-          .eq('chat_id', chatInfo.id);
-
-        message?.forEach(({ id, text_value, chat_id, create_user_id }) =>
-          resultMessage.push({
-            id: id.toString(),
-            chatID: chat_id.toString(),
-            textValue: text_value,
-            incoming: create_user_id !== currentUserInfo.id,
-          }),
-        );
-      }
+    if (data?.length) {
+      data.reverse().forEach(({ id, chat_id, text_value, create_user_id }) => {
+        resultMessages.push({
+          id: id.toString(),
+          chatID: chat_id.toString(),
+          textValue: text_value,
+          incoming: create_user_id !== currentUserInfo?.id,
+        });
+      });
     }
 
     return {
-      data: resultMessage,
+      data: resultMessages,
+      totalCountMessages: count ?? 0,
       error,
     };
   }
@@ -110,12 +111,12 @@ export class ChatService {
    * @param chatID
    * @param textValue
    */
-  static async sendMessageInChat(chatID: TChat['id'], textValue: TMessage['text_value']) {
-    const currentUserInfo = await ChatService.getCurrentUserInfo();
+  async sendMessageInChat(chatID: TChat['id'], textValue: TMessage['text_value']) {
+    const currentUserInfo = await this.getCurrentUserInfo();
 
     const message: Omit<TMessage, keyof TSystemColumn> = {
       chat_id: chatID,
-      create_user_id: currentUserInfo.id,
+      create_user_id: currentUserInfo?.id!,
       text_value: textValue,
     };
 
@@ -128,17 +129,17 @@ export class ChatService {
    * Подписаться на обновления сообщений
    * @param onSubscribe
    */
-  static subscribeMessageChat(onSubscribe: (payload: IMessage) => void) {
-    ChatService.subscribeMessageID = supabase
+  async subscribeMessageChat(onSubscribe: (payload: IMessage) => void) {
+    this.subscribeMessageID = await supabase
       .from<TMessage>(ETableName.MESSAGE)
       .on('INSERT', payload => {
         if (!payload.errors && payload.new) {
-          ChatService.getCurrentUserInfo().then(userInfo => {
+          this.getCurrentUserInfo().then(userInfo => {
             const message: IMessage = {
               id: payload.new.id.toString(),
               chatID: (payload.new.chat_id as number).toString(),
               textValue: payload.new.text_value,
-              incoming: payload.new.create_user_id !== userInfo.id,
+              incoming: payload.new.create_user_id !== userInfo?.id,
             };
 
             onSubscribe(message);
@@ -151,20 +152,21 @@ export class ChatService {
   /**
    * Отписаться от обновления сообщений
    */
-  static unsubscribeMessageChat() {
-    ChatService.subscribeMessageID &&
-      supabase.removeSubscription(ChatService.subscribeMessageID).then(() => (ChatService.subscribeMessageID = null));
+  unsubscribeMessageChat() {
+    if (this.subscribeMessageID) {
+      supabase.removeSubscription(this.subscribeMessageID).then(() => (this.subscribeMessageID = null));
+    }
   }
 
   /**
    * Подписаться на создание новых чатов
    * @param onSubscribe
    */
-  static async subscribeChat(onSubscribe: (payload: IChat) => void) {
-    const currentUserInfo = await ChatService.getCurrentUserInfo();
+  async subscribeChat(onSubscribe: (payload: IChat) => void) {
+    const currentUserInfo = await this.getCurrentUserInfo();
 
-    ChatService.subscribeChatID = supabase
-      .from<TParticipant>(`${ETableName.PARTICIPANT}:user_id=eq.${currentUserInfo.id}`)
+    this.subscribeChatID = supabase
+      .from<TParticipant>(`${ETableName.PARTICIPANT}:user_id=eq.${currentUserInfo?.id}`)
       .on('INSERT', payload => {
         if (!payload.errors && payload.new) {
           const chat: IChat = {
@@ -182,16 +184,17 @@ export class ChatService {
   /**
    * Отписаться от создания новых чатов
    */
-  static unsubscribeChat() {
-    ChatService.subscribeChatID &&
-      supabase.removeSubscription(ChatService.subscribeChatID).then(() => (ChatService.subscribeChatID = null));
+  unsubscribeChat() {
+    if (this.subscribeChatID) {
+      supabase.removeSubscription(this.subscribeChatID).then(() => (this.subscribeChatID = null));
+    }
   }
 
   /**
    * Обновить статус просмотра чата
    * @param chatID
    */
-  static async updateChatView(chatID: TChat['id']) {
+  async updateChatView(chatID: TChat['id']) {
     const { data, error } = await supabase
       .from<TChat>(ETableName.CHAT)
       .update({ chat_view: true })
@@ -205,7 +208,7 @@ export class ChatService {
    * Создать чат
    * @param chatData
    */
-  static async createChat(chatData: Omit<TChat, keyof TSystemColumn>) {
+  async createChat(chatData: Omit<TChat, keyof TSystemColumn>) {
     const { data, error } = await supabase.from<TChat>(ETableName.CHAT).insert([chatData]).single();
     return { data, error };
   }
@@ -214,8 +217,8 @@ export class ChatService {
    * Создать участника чата
    * @param partData
    */
-  static async createParticipant(partData: Omit<TParticipant, keyof TSystemColumn>) {
-    const currentUserInfo = await ChatService.getCurrentUserInfo();
+  async createParticipant(partData: Omit<TParticipant, keyof TSystemColumn>) {
+    const currentUserInfo = await this.getCurrentUserInfo();
 
     const participants: Omit<TParticipant, keyof TSystemColumn>[] = [
       { ...partData, chat_name: `${currentUserInfo?.first_name} ${currentUserInfo?.last_name}` },
