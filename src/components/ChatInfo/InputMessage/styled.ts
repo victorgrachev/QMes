@@ -12,8 +12,7 @@ export const WrapperTextarea = styled.div`
   overflow: hidden;
 `;
 
-export const WrapperButtonSend = styled.div`
-  padding: 0.8rem 0 0.8rem;
+export const WrapperButton = styled.div`
   margin-bottom: 8px;
 
   & > button > i {

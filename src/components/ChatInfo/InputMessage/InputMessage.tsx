@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Textarea, WrapperTextarea, WrapperButtonSend, WrapperInputMessage } from './styled';
+import { Textarea, WrapperTextarea, WrapperInputMessage, WrapperButton } from './styled';
 import { IMessage } from 'models/interfaces';
+import { ModalEmoji, TPropsModalEmoji } from './ModalEmoji';
 
 export type TPropsInputMessage = {
   onSendMessage: (textValue: IMessage['textValue']) => void;
@@ -8,6 +9,7 @@ export type TPropsInputMessage = {
 
 export const InputMessage: React.FC<TPropsInputMessage> = ({ onSendMessage }) => {
   const [message, setMessage] = useState('');
+  const [openModalEmoji, setOpenModalEmoji] = useState(false);
 
   const handleChange: React.ChangeEventHandler<HTMLTextAreaElement> = event => setMessage(event.target.value);
 
@@ -25,8 +27,21 @@ export const InputMessage: React.FC<TPropsInputMessage> = ({ onSendMessage }) =>
     }
   };
 
+  const handleSelectEmoji: TPropsModalEmoji['onSelect'] = (_, { emoji }) => {
+    setMessage(message + emoji);
+    setOpenModalEmoji(!openModalEmoji);
+  };
+
+  const handleToggleEmoji = () => setOpenModalEmoji(!openModalEmoji);
+
   return (
     <WrapperInputMessage>
+      {openModalEmoji && <ModalEmoji onSelect={handleSelectEmoji} />}
+      <WrapperButton>
+        <button className="btn-floating waves-effect waves-light" onClick={handleToggleEmoji}>
+          <i className="material-icons prefix">insert_emoticon</i>
+        </button>
+      </WrapperButton>
       <WrapperTextarea>
         <Textarea
           id="icon_prefix2"
@@ -37,11 +52,11 @@ export const InputMessage: React.FC<TPropsInputMessage> = ({ onSendMessage }) =>
           onKeyDown={handleKeyDown}
         />
       </WrapperTextarea>
-      <WrapperButtonSend>
-        <button className="btn waves-effect waves-light" onClick={handleSendMessage}>
+      <WrapperButton>
+        <button className="btn-floating waves-effect waves-light" onClick={handleSendMessage}>
           <i className="material-icons right">send</i>
         </button>
-      </WrapperButtonSend>
+      </WrapperButton>
     </WrapperInputMessage>
   );
 };

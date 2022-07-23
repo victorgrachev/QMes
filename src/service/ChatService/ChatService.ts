@@ -172,13 +172,22 @@ export class ChatService {
       .from<TParticipant>(`${ETableName.PARTICIPANT}:user_id=eq.${currentUserInfo?.id}`)
       .on('INSERT', payload => {
         if (!payload.errors && payload.new) {
-          const chat: IChat = {
-            id: payload.new.chat_id.toString(),
-            chatName: payload.new.chat_name,
-            chatView: false,
-          };
+          supabase
+            .from<TUser>(ETableName.USER)
+            .select('*')
+            .eq('id', payload.new.user_id.toString())
+            .single()
+            .then(({ data }) => {
+              const chat: IChat = {
+                id: payload.new.id.toString(),
+                qin: data?.qin.toString(),
+                chatName: payload.new.chat_name,
+                chatView: false,
+                avatar: '',
+              };
 
-          onSubscribe(chat);
+              onSubscribe(chat);
+            });
         }
       })
       .subscribe();
