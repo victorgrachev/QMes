@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { WrapperMessage } from './styled';
+import { WrapperMessage, CardMessage, TimeMessage } from './styled';
 import { IMessage } from 'models/interfaces';
 
 export type TPropsMessage = {
@@ -7,7 +7,7 @@ export type TPropsMessage = {
   onVisible?: () => void;
 };
 
-export const Message: React.FC<TPropsMessage> = ({ message: { textValue, incoming, id }, onVisible }) => {
+export const Message: React.FC<TPropsMessage> = ({ message: { textValue, incoming, id, createDate }, onVisible }) => {
   const refMessage = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -33,9 +33,10 @@ export const Message: React.FC<TPropsMessage> = ({ message: { textValue, incomin
   return (
     <WrapperMessage position={incoming ? 'left' : 'right'} className="row">
       <div ref={refMessage} className="col s12" data-message={id}>
-        <div className="card-panel teal">
+        <CardMessage className="card-panel teal">
           <span className="white-text">{textValue}</span>
-        </div>
+          <TimeMessage className="white-text">{createDate}</TimeMessage>
+        </CardMessage>
       </div>
     </WrapperMessage>
   );

@@ -89,11 +89,12 @@ export class ChatService {
     const resultMessages: IMessage[] = [];
 
     if (data?.length) {
-      data.reverse().forEach(({ id, chat_id, text_value, create_user_id }) => {
+      data.reverse().forEach(({ id, chat_id, text_value, create_user_id, created_at }) => {
         resultMessages.push({
           id: id.toString(),
           chatID: chat_id.toString(),
           textValue: text_value,
+          createDate: created_at,
           incoming: create_user_id !== currentUserInfo?.id,
         });
       });
@@ -139,6 +140,7 @@ export class ChatService {
               id: payload.new.id.toString(),
               chatID: (payload.new.chat_id as number).toString(),
               textValue: payload.new.text_value,
+              createDate: payload.new.created_at,
               incoming: payload.new.create_user_id !== userInfo?.id,
             };
 

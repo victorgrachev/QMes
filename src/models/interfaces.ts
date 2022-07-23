@@ -47,5 +47,6 @@ export interface IMessage {
   id: string;
   chatID: string;
   textValue: string;
+  createDate: string;
   incoming: boolean;
 }
