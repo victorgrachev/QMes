@@ -55,14 +55,15 @@ export class ChatService {
 
     const { data, error } = await supabase
       .from<TParticipant>(ETableName.PARTICIPANT)
-      .select('chat_id!inner(*), chat_name')
+      .select('chat_id!inner(*), user_id!inner(*), chat_name')
       .eq('user_id', currentUserInfo?.id!);
 
     return {
-      data: data?.map<IChat>(({ chat_id, chat_name }) => ({
+      data: data?.map<IChat>(({ chat_id, chat_name, user_id }) => ({
         id: (chat_id as TChat).id.toString(),
         chatName: (chat_id as TChat).chat_name || chat_name,
         chatView: (chat_id as TChat).chat_view,
+        qin: (user_id as TUser).qin.toString(),
       })),
       error,
     };

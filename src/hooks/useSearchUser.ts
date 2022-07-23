@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { IUser } from 'models/interfaces';
 import { ChatService } from 'service/ChatService';
+import { useServices } from './useServices';
 
 export function useSearchUser(userQIN?: IUser['qin']) {
+  const { ChatService } = useServices();
   const [user, setUser] = useState<IUser | null>(null);
   const [qin, setQin] = useState(userQIN);
   const [loading, setLoading] = useState<boolean>();

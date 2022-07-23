@@ -16,6 +16,7 @@ export const MainDiv = styled.div<TPropsMainDiv>`
     left: 0;
     transform: ${({ openMobileMenu }) => `translateX(${openMobileMenu ? '0' : '-100'}%)`};
     transition: transform linear 0.2s;
+    z-index: 1;
   }
 `;
 

@@ -38,6 +38,7 @@ export interface IChat {
   chatName: string;
   chatView: boolean;
   avatar?: string;
+  qin?: string;
 }
 
 /**
