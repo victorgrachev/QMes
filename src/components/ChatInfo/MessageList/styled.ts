@@ -6,6 +6,8 @@ type TPropsWrapperMessage = {
 
 export const WrapperMessage = styled.div<TPropsWrapperMessage>`
   width: 50%;
+  max-width: 500px;
+  overflow: hidden;
   ${props => `margin-${props.position ?? 'right'}: initial`}
 `;
 
