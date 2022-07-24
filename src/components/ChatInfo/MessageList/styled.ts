@@ -1,23 +1,25 @@
 import styled from 'styled-components';
 
-type TPropsWrapperMessage = {
+type TPropsCardMessage = {
   position: 'left' | 'right';
 };
 
-export const WrapperMessage = styled.div<TPropsWrapperMessage>`
-  width: 50%;
-  max-width: 500px;
+export const WrapperMessage = styled.div`
   overflow: hidden;
-  ${props => `margin-${props.position ?? 'right'}: initial`}
+  display: flex;
 `;
 
 export const WrapperMessageList = styled.div`
   flex: 1 1 100%;
   overflow-y: auto;
+  padding: 0 1rem;
 `;
 
-export const CardMessage = styled.div`
+export const CardMessage = styled.div<TPropsCardMessage>`
   position: relative;
+  max-width: 50%;
+  overflow-wrap: break-word;
+  ${props => `margin-${props.position ?? 'left'}: auto`}
 `;
 
 export const TimeMessage = styled.span`

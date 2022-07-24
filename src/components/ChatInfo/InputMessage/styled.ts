@@ -2,17 +2,20 @@ import styled from 'styled-components';
 
 export const WrapperInputMessage = styled.div`
   flex: 0 0 auto;
+  padding: 0 1rem;
   display: flex;
+  gap: 1rem;
   justify-content: space-around;
   align-items: flex-end;
 `;
 
 export const WrapperTextarea = styled.div`
-  width: 80%;
+  flex: 1 1 auto;
   overflow: hidden;
 `;
 
 export const WrapperButton = styled.div`
+  flex: 0 0 auto;
   margin-bottom: 8px;
 
   & > button > i {
@@ -21,7 +24,6 @@ export const WrapperButton = styled.div`
 `;
 
 export const Textarea = styled.textarea`
-  width: 80%;
   overflow: auto !important;
   max-height: 200px;
 

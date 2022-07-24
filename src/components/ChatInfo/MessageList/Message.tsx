@@ -31,13 +31,11 @@ export const Message: React.FC<TPropsMessage> = ({ message: { textValue, incomin
   }, [onVisible]);
 
   return (
-    <WrapperMessage position={incoming ? 'left' : 'right'} className="row">
-      <div ref={refMessage} className="col s12" data-message={id}>
-        <CardMessage className="card-panel teal">
-          <span className="white-text">{textValue}</span>
-          <TimeMessage className="white-text">{createDate}</TimeMessage>
-        </CardMessage>
-      </div>
+    <WrapperMessage ref={refMessage} data-message={id} className="section">
+      <CardMessage className="card-panel teal" position={incoming ? 'right' : 'left'}>
+        <span className="white-text">{textValue}</span>
+        <TimeMessage className="white-text">{createDate}</TimeMessage>
+      </CardMessage>
     </WrapperMessage>
   );
 };

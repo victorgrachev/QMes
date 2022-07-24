@@ -25,7 +25,8 @@ export const ModalEmoji: React.FC<TPropsModalEmoji> = ({ onSelect }) => {
       pickerStyle={{
         position: 'absolute',
         height: '300px',
-        left: '0',
+        left: '1rem',
+        bottom: '4rem',
         userSelect: 'none',
       }}
       native

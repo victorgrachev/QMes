@@ -5,7 +5,7 @@ type TPropsMainDiv = {
 };
 
 export const MainDiv = styled.div<TPropsMainDiv>`
-  flex: 0 1 25%;
+  flex: 0 0 auto;
   height: 100%;
   overflow: hidden;
   display: flex;
@@ -16,7 +16,7 @@ export const MainDiv = styled.div<TPropsMainDiv>`
     left: 0;
     transform: ${({ openMobileMenu }) => `translateX(${openMobileMenu ? '0' : '-100'}%)`};
     transition: transform linear 0.2s;
-    z-index: 1;
+    z-index: 2;
   }
 `;
 
