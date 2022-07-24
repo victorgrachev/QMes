@@ -50,14 +50,18 @@ export const InputMessage: React.FC<TPropsInputMessage> = ({ onSendMessage }) =>
     <WrapperInputMessage>
       {openModalEmoji && <ModalEmoji onSelect={handleSelectEmoji} />}
       <WrapperButton>
-        <button ref={refBtnOpenEmoji} className="btn-floating waves-effect waves-light" onClick={handleToggleEmoji}>
-          <i className="material-icons prefix">insert_emoticon</i>
+        <button
+          ref={refBtnOpenEmoji}
+          className="btn-floating waves-effect waves-light light-green lighten-2"
+          onClick={handleToggleEmoji}
+        >
+          <i className="material-icons prefix green-text text-darken-4">insert_emoticon</i>
         </button>
       </WrapperButton>
       <WrapperTextarea>
         <Textarea
           id="icon_prefix2"
-          className="materialize-textarea"
+          className="materialize-textarea green-text text-darken-4"
           placeholder="Введите текст сообщения"
           value={message}
           onChange={handleChange}
@@ -65,8 +69,8 @@ export const InputMessage: React.FC<TPropsInputMessage> = ({ onSendMessage }) =>
         />
       </WrapperTextarea>
       <WrapperButton>
-        <button className="btn-floating waves-effect waves-light" onClick={handleSendMessage}>
-          <i className="material-icons right">send</i>
+        <button className="btn-floating waves-effect waves-light light-green lighten-2" onClick={handleSendMessage}>
+          <i className="material-icons right green-text text-darken-4">send</i>
         </button>
       </WrapperButton>
     </WrapperInputMessage>

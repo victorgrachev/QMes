@@ -34,7 +34,7 @@ export const ListChat: React.FC<TPropsListChat> = props => {
       <SearchNavWrapper>
         <SearchNav onChange={handleChangeSearch} onClose={handleCloseSearch} />
       </SearchNavWrapper>
-      <ListWrapper className="teal darken-1">
+      <ListWrapper className="light-green lighten-3 green-text text-darken-4">
         {
           <ul>
             {(filterChat ? filterChat : chats)?.map(chat => (

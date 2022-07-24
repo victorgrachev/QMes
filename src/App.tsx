@@ -9,7 +9,7 @@ moment.locale('ru');
 
 export default function App() {
   return (
-    <AppWrapper className="teal lighten-5">
+    <AppWrapper className="light-green lighten-5">
       <ServiceProvider>
         <HashRouter>
           <Router />

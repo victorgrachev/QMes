@@ -52,8 +52,8 @@ export const MessageList = React.forwardRef<TMessageListController, TPropsMessag
         )}
         {Object.keys(messagesGroupByDate).map((date, indexDate) => (
           <div key={date}>
-            <div className="section center-align">{date}</div>
-            <div className="divider"></div>
+            <div className="section center-align green-text text-darken-4">{date}</div>
+            <div className="divider light-green lighten-3"></div>
             {messagesGroupByDate[date].map((message, index) => (
               <Message
                 key={message.id}

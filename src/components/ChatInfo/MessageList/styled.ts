@@ -19,6 +19,7 @@ export const CardMessage = styled.div<TPropsCardMessage>`
   position: relative;
   max-width: 50%;
   overflow-wrap: break-word;
+  border-radius: 15px;
   ${props => `margin-${props.position ?? 'left'}: auto`}
 `;
 

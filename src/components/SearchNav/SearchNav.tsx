@@ -20,12 +20,12 @@ export const SearchNav: React.FC<TPropsSearchNav> = ({ onChange, onClose }) => {
 
   return (
     <nav>
-      <div className="nav-wrapper teal darken-1">
+      <div className="nav-wrapper light-green lighten-2">
         <form>
           <div className="input-field">
             <input id="search" type="search" required placeholder="Поиск" value={searchValue} onChange={handleChange} />
             <label className="label-icon" htmlFor="search">
-              <i className="material-icons no-select">search</i>
+              <i className="material-icons no-select green-text text-darken-4">search</i>
             </label>
             <i className="material-icons no-select" onClick={handleClose}>
               close

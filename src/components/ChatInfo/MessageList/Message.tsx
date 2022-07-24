@@ -32,9 +32,9 @@ export const Message: React.FC<TPropsMessage> = ({ message: { textValue, incomin
 
   return (
     <WrapperMessage ref={refMessage} data-message={id} className="section">
-      <CardMessage className="card-panel teal" position={incoming ? 'right' : 'left'}>
-        <span className="white-text">{textValue}</span>
-        <TimeMessage className="white-text">{createDate}</TimeMessage>
+      <CardMessage className="card-panel light-green lighten-2" position={incoming ? 'right' : 'left'}>
+        <span className="green-text text-darken-4">{textValue}</span>
+        <TimeMessage className="green-text text-darken-4">{createDate}</TimeMessage>
       </CardMessage>
     </WrapperMessage>
   );
