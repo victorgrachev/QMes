@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 type TPropsMainDiv = {
-  openMobileMenu: boolean;
+  openMobileMenu?: boolean;
 };
 
 export const MainDiv = styled.div<TPropsMainDiv>`
@@ -13,6 +13,8 @@ export const MainDiv = styled.div<TPropsMainDiv>`
 
   @media (max-width: 768px) {
     position: absolute;
+    top: 0;
+    bottom: 0;
     left: 0;
     transform: ${({ openMobileMenu }) => `translateX(${openMobileMenu ? '0' : '-100'}%)`};
     transition: transform linear 0.2s;

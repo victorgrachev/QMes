@@ -4,6 +4,8 @@ import { useSearchUser } from 'hooks/useSearchUser';
 import { Loader } from 'components/Loader';
 import { InputQIN } from './styled';
 import { useChat } from 'hooks/useChat';
+import { useServices } from '../../hooks/useServices';
+import { ETypeEvent } from '../../service/enums';
 
 export type TPropsModalSearch = {
   onCreateChat: ReturnType<typeof useChat>['createChat'];
@@ -16,8 +18,8 @@ export const ModalSearch: React.FC<TPropsModalSearch> = props => {
 
   const [userQIN, setUserQIN] = useState<number>();
   const [loadAddContact, setLoadAddContact] = useState(false);
-
   const { searchUser, loading } = useSearchUser(userQIN);
+  const { EventService } = useServices();
 
   const handleSearchUser = () => setUserQIN(Number(refInputValueQIN.current?.value));
 
@@ -40,7 +42,18 @@ export const ModalSearch: React.FC<TPropsModalSearch> = props => {
   useEffect(() => {
     if (refModalElement.current) {
       const modalWindow = M.Modal.init(refModalElement.current);
-      return () => modalWindow.destroy();
+
+      const openModal = () => modalWindow.open();
+      const closeModal = () => modalWindow.close();
+
+      EventService.subscribe(ETypeEvent.OPEN_MODAL_SEARCH_USER, openModal);
+      EventService.subscribe(ETypeEvent.CLOSE_MODAL_SEARCH_USER, closeModal);
+
+      return () => {
+        modalWindow.destroy();
+        EventService.unsubscribe(ETypeEvent.OPEN_MODAL_SEARCH_USER, openModal);
+        EventService.unsubscribe(ETypeEvent.CLOSE_MODAL_SEARCH_USER, closeModal);
+      };
     }
   }, []);
 
@@ -73,7 +86,7 @@ export const ModalSearch: React.FC<TPropsModalSearch> = props => {
   }
 
   return (
-    <div id="ModalSearch" ref={refModalElement} className="modal bottom-sheet">
+    <div ref={refModalElement} className="modal bottom-sheet">
       <div className="modal-content">
         <h4>Поиск пользователей по QIN</h4>
         <div className="row">

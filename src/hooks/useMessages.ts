@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
-import { IMessage, IChat } from 'models/interfaces';
+import { IChat, IMessage } from 'models/interfaces';
 import { DEFAULT_LIMIT_MESSAGE } from 'common/const';
 import { useServices } from './useServices';
+import { ETypeEvent } from 'service/enums';
 
 type TStateMessages = {
   [chatID: string]: IMessage[];
 };
 
 export function useMessages(chatID?: IChat['id']) {
-  const { ChatService, MessageListController } = useServices();
+  const { ChatService, EventService } = useServices();
 
   const [loading, setLoading] = useState(false);
   const [totalCountMessages, setCountTotalMessages] = useState(0);
@@ -46,7 +47,7 @@ export function useMessages(chatID?: IChat['id']) {
       }));
 
       requestAnimationFrame(() =>
-        MessageListController?.current?.scrollMessageListTo({ behavior: 'smooth', message: newIncomingMessage }),
+        EventService.dispatch(ETypeEvent.SCROLL_MESSAGE_LIST_TO, { behavior: 'smooth', message: newIncomingMessage }),
       );
     }
   }, [newIncomingMessage, chatID]);
@@ -63,7 +64,7 @@ export function useMessages(chatID?: IChat['id']) {
         ({ data }) => {
           setMessages(state => ({ ...state, [chatID]: data }));
           onLoaded?.();
-          MessageListController?.current?.scrollMessageListTo();
+          EventService.dispatch(ETypeEvent.SCROLL_MESSAGE_LIST_TO);
         },
       );
     }

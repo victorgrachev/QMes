@@ -1,12 +1,12 @@
 import React from 'react';
 import { AuthService } from 'service/AuthService';
 import { ChatService } from 'service/ChatService';
-import { TMessageListController } from 'components/ChatInfo/MessageList';
+import { EventService } from 'service/EventService';
 
 export type TServiceContext = {
-  MessageListController?: React.ForwardedRef<TMessageListController>;
   InstanceAuthService?: AuthService;
   InstanceChatService?: ChatService;
+  InstanceEventService?: EventService;
 };
 
 export const ServiceContext = React.createContext<TServiceContext>({});

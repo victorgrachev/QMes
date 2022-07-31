@@ -1,3 +1,6 @@
+import { ETypeEvent } from './enums';
+import { IMessage } from '../models/interfaces';
+
 export type TSystemColumn = {
   id: number;
   created_at: string;
@@ -25,4 +28,12 @@ export type TParticipant = TSystemColumn & {
   user_id: number | TUser;
   chat_id: number | TChat;
   chat_name: string;
+};
+
+export type TMapEventParams = {
+  [ETypeEvent.SCROLL_MESSAGE_LIST_TO]: { top?: number; behavior?: ScrollBehavior; message?: IMessage };
+  [ETypeEvent.OPEN_MODAL_SEARCH_USER]: {};
+  [ETypeEvent.CLOSE_MODAL_SEARCH_USER]: {};
+  [ETypeEvent.OPEN_LIST_CHAT]: {};
+  [ETypeEvent.CLOSE_LIST_CHAT]: {};
 };

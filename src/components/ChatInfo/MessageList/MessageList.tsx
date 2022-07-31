@@ -1,72 +1,75 @@
-import React, { useLayoutEffect, useRef, useState, useImperativeHandle } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import { Message } from './Message';
 import { IMessage } from 'models/interfaces';
 import { WrapperMessageList } from './styled';
 import { Loader } from 'components/Loader';
 import moment from 'moment';
-
-export type TMessageListController = {
-  scrollMessageListTo: (params?: { top?: number; behavior?: ScrollBehavior; message?: IMessage }) => void;
-};
+import { useServices } from 'hooks/useServices';
+import { ETypeEvent } from 'service/enums';
 
 type TPropsMessageList = {
   messages: IMessage[];
   onFirstVisibleMessage?: (onLoading?: () => void, onLoaded?: () => void) => void;
 };
 
-export const MessageList = React.forwardRef<TMessageListController, TPropsMessageList>(
-  ({ messages, onFirstVisibleMessage }, ref) => {
-    const [isMoreMessageLoading, setIsMoreMessageLoading] = useState(false);
-    const refMessageList = useRef<HTMLDivElement | null>(null);
+export const MessageList: React.FC<TPropsMessageList> = ({ messages, onFirstVisibleMessage }) => {
+  const [isMoreMessageLoading, setIsMoreMessageLoading] = useState(false);
+  const { EventService } = useServices();
+  const refMessageList = useRef<HTMLDivElement | null>(null);
 
-    useImperativeHandle(ref, () => ({
-      scrollMessageListTo: ({ top = refMessageList.current?.scrollHeight, behavior = 'auto', message } = {}) => {
-        if (message) {
-          const refMessage = document.querySelector(`[data-message="${message.id}"]`);
-          refMessage?.scrollIntoView({ behavior });
-        } else {
-          refMessageList.current?.scrollTo?.({ top, behavior });
-        }
-      },
-    }));
+  useLayoutEffect(() => {
+    refMessageList.current?.scrollTo?.({ top: refMessageList.current?.scrollHeight });
 
-    useLayoutEffect(() => {
-      refMessageList.current?.scrollTo?.({ top: refMessageList.current?.scrollHeight });
-    }, []);
+    const scrollMessage: Parameters<typeof EventService.subscribe>[1] = ({ detail }) => {
+      const { message, behavior = 'auto', top = refMessageList.current?.scrollHeight } = detail ?? {};
 
-    const handleOnFirstVisibleMessage = () => {
-      onFirstVisibleMessage?.(
-        () => setIsMoreMessageLoading(true),
-        () => setIsMoreMessageLoading(false),
-      );
+      if (message) {
+        const refMessage = document.querySelector(`[data-message="${message.id}"]`);
+        refMessage?.scrollIntoView({ behavior });
+      } else {
+        refMessageList.current?.scrollTo?.({ top, behavior });
+      }
     };
 
-    const messagesGroupByDate = groupByDateMessages(messages);
+    EventService.subscribe(ETypeEvent.SCROLL_MESSAGE_LIST_TO, scrollMessage);
 
-    return (
-      <WrapperMessageList ref={refMessageList}>
-        {isMoreMessageLoading && (
-          <div className="section center-align">
-            <Loader />
-          </div>
-        )}
-        {Object.keys(messagesGroupByDate).map((date, indexDate) => (
-          <div key={date}>
-            <div className="section center-align green-text text-darken-4">{date}</div>
-            <div className="divider light-green lighten-3"></div>
-            {messagesGroupByDate[date].map((message, index) => (
-              <Message
-                key={message.id}
-                message={message}
-                onVisible={indexDate === 0 && index === 0 ? handleOnFirstVisibleMessage : undefined}
-              />
-            ))}
-          </div>
-        ))}
-      </WrapperMessageList>
+    return () => {
+      EventService.unsubscribe(ETypeEvent.SCROLL_MESSAGE_LIST_TO, scrollMessage);
+    };
+  }, []);
+
+  const handleOnFirstVisibleMessage = () => {
+    onFirstVisibleMessage?.(
+      () => setIsMoreMessageLoading(true),
+      () => setIsMoreMessageLoading(false),
     );
-  },
-);
+  };
+
+  const messagesGroupByDate = groupByDateMessages(messages);
+
+  return (
+    <WrapperMessageList ref={refMessageList}>
+      {isMoreMessageLoading && (
+        <div className="section center-align">
+          <Loader />
+        </div>
+      )}
+      {Object.keys(messagesGroupByDate).map((date, indexDate) => (
+        <div key={date}>
+          <div className="section center-align green-text text-darken-4">{date}</div>
+          <div className="divider light-green lighten-3"></div>
+          {messagesGroupByDate[date].map((message, index) => (
+            <Message
+              key={message.id}
+              message={message}
+              onVisible={indexDate === 0 && index === 0 ? handleOnFirstVisibleMessage : undefined}
+            />
+          ))}
+        </div>
+      ))}
+    </WrapperMessageList>
+  );
+};
 
 function groupByDateMessages(messages: IMessage[]) {
   const result: Record<string, IMessage[]> = {};
