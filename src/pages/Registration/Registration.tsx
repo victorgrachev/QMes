@@ -53,37 +53,39 @@ export const Registration: React.FC = () => {
       ],
       buttons: [
         {
+          id: Date.now() * Math.random(),
           label: 'Вход',
-          colNumber: 6,
+          submit: false,
           onClick: () => navigate('/main'),
         },
-      ],
-      submitButton: {
-        label: 'Регистрация',
-        colNumber: 6,
-        onSubmit: async data => {
-          const { firstName, lastName, email, password } = data;
-
-          const userData = {
-            firstName,
-            lastName,
-          };
-
-          const authData = {
-            email,
-            password,
-          };
-
-          const resultSign = await handleSignUp(userData, authData);
-
-          if (!resultSign.error) {
-            M.toast({
-              html: 'Для завершения регистрации необходимо подтвердить профиль. На почту было отправлено письмо с инструкцией.',
-            });
-          }
-
-          return resultSign;
+        {
+          id: Date.now() * Math.random(),
+          label: 'Регистрация',
+          submit: true,
         },
+      ],
+      onSubmit: async data => {
+        const { firstName, lastName, email, password } = data;
+
+        const userData = {
+          firstName,
+          lastName,
+        };
+
+        const authData = {
+          email,
+          password,
+        };
+
+        const resultSign = await handleSignUp(userData, authData);
+
+        if (!resultSign.error) {
+          M.toast({
+            html: 'Для завершения регистрации необходимо подтвердить профиль. На почту было отправлено письмо с инструкцией.',
+          });
+        }
+
+        return resultSign;
       },
     }),
     [],

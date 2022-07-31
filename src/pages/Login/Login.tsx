@@ -40,18 +40,18 @@ export const Login: React.FC = () => {
       ],
       buttons: [
         {
+          id: Date.now() * Math.random(),
           label: 'Регистрация',
-          colNumber: 12,
+          submit: false,
           onClick: () => navigate('/signup'),
         },
-      ],
-      submitButton: {
-        label: 'Войти',
-        colNumber: 12,
-        onSubmit: async authData => {
-          return handleSighIn(authData);
+        {
+          id: Date.now() * Math.random(),
+          label: 'Войти',
+          submit: true,
         },
-      },
+      ],
+      onSubmit: async authData => handleSighIn(authData),
     }),
     [],
   );

@@ -9,7 +9,8 @@ export type TInputForm = {
 };
 
 export type TButtonForm = {
+  id: number;
   label: string;
-  colNumber: number;
-  onClick: React.EventHandler<React.SyntheticEvent>;
+  submit: boolean;
+  onClick?: React.EventHandler<React.SyntheticEvent>;
 };
