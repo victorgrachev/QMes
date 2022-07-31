@@ -36,4 +36,5 @@ export type TMapEventParams = {
   [ETypeEvent.CLOSE_MODAL_SEARCH_USER]: {};
   [ETypeEvent.OPEN_LIST_CHAT]: {};
   [ETypeEvent.CLOSE_LIST_CHAT]: {};
+  [ETypeEvent.TOGGLE_MOBILE_ICON]: {};
 };

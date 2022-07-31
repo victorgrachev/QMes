@@ -15,20 +15,26 @@ export const NavBar = () => {
     if (refDropdownTrigger.current) {
       const dropdown = M.Dropdown.init(refDropdownTrigger.current);
 
+      const toggleMobileIcon = () => setIsVisibleOpenMobile(prevState => !prevState);
+      EventService.subscribe(ETypeEvent.TOGGLE_MOBILE_ICON, toggleMobileIcon);
+
       return () => {
         dropdown.destroy();
+        EventService.unsubscribe(ETypeEvent.TOGGLE_MOBILE_ICON, toggleMobileIcon);
       };
     }
   }, []);
 
   const handleClickOpenMobileMenu: React.MouseEventHandler<HTMLAnchorElement> = event => {
     event.preventDefault();
+    event.stopPropagation();
     EventService.dispatch(ETypeEvent.OPEN_LIST_CHAT);
     setIsVisibleOpenMobile(true);
   };
 
   const handleClickCloseMobileMenu: React.MouseEventHandler<HTMLAnchorElement> = event => {
     event.preventDefault();
+    event.stopPropagation();
     EventService.dispatch(ETypeEvent.CLOSE_LIST_CHAT);
     setIsVisibleOpenMobile(false);
   };

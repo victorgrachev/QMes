@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Textarea, WrapperTextarea, WrapperInputMessage, WrapperButton } from './styled';
 import { IMessage } from 'models/interfaces';
 import { ModalEmoji, TPropsModalEmoji } from './ModalEmoji';
+import { useOutsideClick } from 'hooks/useOutsideClick';
 
 export type TPropsInputMessage = {
   onSendMessage: (textValue: IMessage['textValue']) => void;
@@ -10,7 +11,6 @@ export type TPropsInputMessage = {
 export const InputMessage: React.FC<TPropsInputMessage> = ({ onSendMessage }) => {
   const [message, setMessage] = useState('');
   const [openModalEmoji, setOpenModalEmoji] = useState(false);
-  const refBtnOpenEmoji = useRef<HTMLButtonElement | null>(null);
 
   const handleChange: React.ChangeEventHandler<HTMLTextAreaElement> = event => setMessage(event.target.value);
 
@@ -35,23 +35,14 @@ export const InputMessage: React.FC<TPropsInputMessage> = ({ onSendMessage }) =>
 
   const handleToggleEmoji = () => setOpenModalEmoji(!openModalEmoji);
 
-  useEffect(() => {
-    const handleOutsideClick = (event: MouseEvent) => {
-      if (!refBtnOpenEmoji.current?.contains(event.target as Node)) {
-        setOpenModalEmoji(false);
-      }
-    };
-
-    document.addEventListener('click', handleOutsideClick);
-    return () => document.removeEventListener('click', handleOutsideClick);
-  }, []);
+  const ref = useOutsideClick<HTMLButtonElement>(() => setOpenModalEmoji(false));
 
   return (
     <WrapperInputMessage>
       {openModalEmoji && <ModalEmoji onSelect={handleSelectEmoji} />}
       <WrapperButton>
         <button
-          ref={refBtnOpenEmoji}
+          ref={ref}
           className="btn-floating waves-effect waves-light light-green lighten-2"
           onClick={handleToggleEmoji}
         >

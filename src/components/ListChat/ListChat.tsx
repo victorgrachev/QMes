@@ -5,6 +5,7 @@ import { IChat } from 'models/interfaces';
 import { ListWrapper, MainDiv, SearchNavWrapper } from './styled';
 import { useServices } from 'hooks/useServices';
 import { ETypeEvent } from 'service/enums';
+import { useOutsideClick } from 'hooks/useOutsideClick';
 
 export type TPropsListChat = {
   chats: IChat[];
@@ -45,8 +46,15 @@ export const ListChat: React.FC<TPropsListChat> = props => {
     setFilterChat(null);
   };
 
+  const ref = useOutsideClick<HTMLDivElement>(() => {
+    if (isOpenMobileMenu) {
+      setIsOpenMobileMenu(false);
+      EventService.dispatch(ETypeEvent.TOGGLE_MOBILE_ICON);
+    }
+  });
+
   return (
-    <MainDiv openMobileMenu={isOpenMobileMenu}>
+    <MainDiv ref={ref} openMobileMenu={isOpenMobileMenu}>
       <SearchNavWrapper>
         <SearchNav onChange={handleChangeSearch} onClose={handleCloseSearch} />
       </SearchNavWrapper>
