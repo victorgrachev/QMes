@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import { useLocation } from 'react-router-dom';
 import { StyledPage } from './styled';
 
-export const PageWrapper: React.FC = ({ children }) => {
+export const PageWrapper: React.FC<PropsWithChildren> = ({ children }) => {
   const location = useLocation();
 
   return (

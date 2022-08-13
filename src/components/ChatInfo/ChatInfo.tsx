@@ -5,7 +5,6 @@ import { MainChatInfo } from './styled';
 import { IChat } from 'models/interfaces';
 import { useMessages } from 'hooks/useMessages';
 import { LoaderPage } from 'components/LoaderPage';
-import { useServices } from 'hooks/useServices';
 
 export type TPropsChatInfo = {
   selectedChat: IChat;
@@ -14,7 +13,6 @@ export type TPropsChatInfo = {
 export const ChatInfo: React.FC<TPropsChatInfo> = props => {
   const { selectedChat } = props;
   const { loading, messages, sendMessage, loadMoreMessages } = useMessages(selectedChat?.id);
-  const { MessageListController } = useServices();
 
   const handleSendMessage = (textValue: string) => {
     sendMessage(selectedChat?.id, textValue);
@@ -26,7 +24,7 @@ export const ChatInfo: React.FC<TPropsChatInfo> = props => {
         <LoaderPage />
       ) : (
         <>
-          <MessageList ref={MessageListController} messages={messages} onFirstVisibleMessage={loadMoreMessages} />
+          <MessageList messages={messages} onFirstVisibleMessage={loadMoreMessages} />
           <InputMessage onSendMessage={handleSendMessage} />
         </>
       )}

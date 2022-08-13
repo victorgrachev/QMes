@@ -4,6 +4,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import { createTsLoader } from './tools/webpack/createTsLoader';
 import { createStyleLoader } from './tools/webpack/createStyleLoader';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import 'webpack-dev-server';
 
 const rules = [
@@ -26,6 +27,7 @@ const Config: Configuration = {
   target: ['web', 'es5'],
   module: { rules },
   plugins: [
+    new ForkTsCheckerWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'src/assets/index.html'),
     }),

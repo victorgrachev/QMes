@@ -17,7 +17,7 @@ const PUBLIC_ROUTES = [
   },
   {
     path: ROUTES.COMMON,
-    element: <Navigate to="/signin" replace />,
+    element: <Navigate to={ROUTES.NOT_AUTH.SIGN_IN} replace />,
   },
 ];
 
@@ -28,7 +28,7 @@ const PRIVATE_ROUTES = [
   },
   {
     path: ROUTES.COMMON,
-    element: <Navigate to="/main" replace />,
+    element: <Navigate to={ROUTES.AUTH.MAIN} replace />,
   },
 ];
 

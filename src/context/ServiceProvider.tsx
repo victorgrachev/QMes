@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { PropsWithChildren, useEffect, useState } from 'react';
 import { ServiceContext, TServiceContext } from './context';
 import { AuthService } from 'service/AuthService';
 import { ChatService } from 'service/ChatService';
 import { EventService } from 'service/EventService';
 
-export const ServiceProvider: React.FC = ({ children }) => {
+export const ServiceProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [services, setServices] = useState<TServiceContext>();
 
   useEffect(() => {

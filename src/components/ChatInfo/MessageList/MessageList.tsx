@@ -6,6 +6,7 @@ import { Loader } from 'components/Loader';
 import moment from 'moment';
 import { useServices } from 'hooks/useServices';
 import { ETypeEvent } from 'service/enums';
+import { TMapEventParams } from '../../../service/types';
 
 type TPropsMessageList = {
   messages: IMessage[];
@@ -20,7 +21,7 @@ export const MessageList: React.FC<TPropsMessageList> = ({ messages, onFirstVisi
   useLayoutEffect(() => {
     refMessageList.current?.scrollTo?.({ top: refMessageList.current?.scrollHeight });
 
-    const scrollMessage: Parameters<typeof EventService.subscribe>[1] = ({ detail }) => {
+    const scrollMessage = ({ detail }: CustomEvent<TMapEventParams[ETypeEvent.SCROLL_MESSAGE_LIST_TO]>) => {
       const { message, behavior = 'auto', top = refMessageList.current?.scrollHeight } = detail ?? {};
 
       if (message) {

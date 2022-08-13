@@ -14,3 +14,13 @@ export const WrapperMain = styled.div`
   overflow: hidden;
   position: relative;
 `;
+
+export const NotSelectChat = styled.div`
+  height: 100%;
+  flex: 1 1 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+`;
