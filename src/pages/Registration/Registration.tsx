@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
 import { Form, TPropsForm } from 'components/Form';
 import { useNavigate } from 'react-router-dom';
-import { PageWrapper } from 'components/PageWrapper';
 import { useAuth } from 'hooks/useAuth';
 import M from 'materialize-css';
+import { Page } from 'common/styled';
+import { ROUTES } from 'routes';
 
 type TRegistrationFormData = {
   firstName: string;
@@ -56,7 +57,7 @@ export const Registration: React.FC = () => {
           id: Date.now() * Math.random(),
           label: 'Вход',
           submit: false,
-          onClick: () => navigate('/main'),
+          onClick: () => navigate(ROUTES.NOT_AUTH.SIGN_IN),
         },
         {
           id: Date.now() * Math.random(),
@@ -92,8 +93,8 @@ export const Registration: React.FC = () => {
   );
 
   return (
-    <PageWrapper>
+    <Page className="valign-wrapper">
       <Form {...configForm} />
-    </PageWrapper>
+    </Page>
   );
 };

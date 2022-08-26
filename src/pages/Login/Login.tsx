@@ -2,7 +2,8 @@ import React, { useMemo } from 'react';
 import { useAuth } from 'hooks/useAuth';
 import { Form, TPropsForm } from 'components/Form';
 import { useNavigate } from 'react-router-dom';
-import { PageWrapper } from 'components/PageWrapper';
+import { Page } from 'common/styled';
+import { ROUTES } from '../../routes';
 
 type TLoginFormData = {
   email: string;
@@ -40,13 +41,13 @@ export const Login: React.FC = () => {
       ],
       buttons: [
         {
-          id: Date.now() * Math.random(),
+          id: 1,
           label: 'Регистрация',
           submit: false,
-          onClick: () => navigate('/signup'),
+          onClick: () => navigate(ROUTES.NOT_AUTH.SIGN_UP),
         },
         {
-          id: Date.now() * Math.random(),
+          id: 2,
           label: 'Войти',
           submit: true,
         },
@@ -57,8 +58,8 @@ export const Login: React.FC = () => {
   );
 
   return (
-    <PageWrapper>
+    <Page className="valign-wrapper">
       <Form {...configForm} />
-    </PageWrapper>
+    </Page>
   );
 };

@@ -57,7 +57,7 @@ export const Form = <T extends {}>(props: TPropsForm<T>) => {
           <div key={id} className="input-field col s12 l6 center-align">
             <ButtonForm
               className="btn-large waves-effect waves-light light-green lighten-2 green-text text-darken-4"
-              type={submit ? 'submit' : void 0}
+              type={submit ? 'submit' : 'button'}
               onClick={onClick}
             >
               {label}

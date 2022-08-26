@@ -1,10 +1,11 @@
 import React from 'react';
-import { Navigate, useRoutes } from 'react-router-dom';
+import { Navigate, Routes, useRoutes } from 'react-router-dom';
 import { useSession } from 'hooks/useSession';
 import { Login } from '../pages/Login';
 import { Registration } from '../pages/Registration';
 import { Main } from '../pages/Main';
 import { ROUTES } from './const';
+import { PageWrapper } from '../components/PageWrapper';
 
 const PUBLIC_ROUTES = [
   {
@@ -34,5 +35,7 @@ const PRIVATE_ROUTES = [
 
 export const Router = () => {
   const session = useSession();
-  return useRoutes(session ? PRIVATE_ROUTES : PUBLIC_ROUTES);
+  const routes = useRoutes(session ? PRIVATE_ROUTES : PUBLIC_ROUTES);
+
+  return <PageWrapper>{routes}</PageWrapper>;
 };
