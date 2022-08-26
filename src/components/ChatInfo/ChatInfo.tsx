@@ -24,7 +24,7 @@ export const ChatInfo: React.FC<TPropsChatInfo> = props => {
         <LoaderPage />
       ) : (
         <>
-          <MessageList messages={messages} onFirstVisibleMessage={loadMoreMessages} />
+          <MessageList title={selectedChat.chatName} messages={messages} onFirstVisibleMessage={loadMoreMessages} />
           <InputMessage onSendMessage={handleSendMessage} />
         </>
       )}

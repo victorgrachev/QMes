@@ -1,19 +1,20 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
 import { Message } from './Message';
 import { IMessage } from 'models/interfaces';
-import { WrapperMessageList } from './styled';
+import { WrapperMessageList, MessageListStyled, MessageListTitle } from './styled';
 import { Loader } from 'components/Loader';
 import moment from 'moment';
 import { useServices } from 'hooks/useServices';
 import { ETypeEvent } from 'service/enums';
-import { TMapEventParams } from '../../../service/types';
+import { TMapEventParams } from 'service/types';
 
 type TPropsMessageList = {
+  title: string;
   messages: IMessage[];
   onFirstVisibleMessage?: (onLoading?: () => void, onLoaded?: () => void) => void;
 };
 
-export const MessageList: React.FC<TPropsMessageList> = ({ messages, onFirstVisibleMessage }) => {
+export const MessageList: React.FC<TPropsMessageList> = ({ title, messages, onFirstVisibleMessage }) => {
   const [isMoreMessageLoading, setIsMoreMessageLoading] = useState(false);
   const { EventService } = useServices();
   const refMessageList = useRef<HTMLDivElement | null>(null);
@@ -49,25 +50,37 @@ export const MessageList: React.FC<TPropsMessageList> = ({ messages, onFirstVisi
   const messagesGroupByDate = groupByDateMessages(messages);
 
   return (
-    <WrapperMessageList ref={refMessageList}>
-      {isMoreMessageLoading && (
-        <div className="section center-align">
-          <Loader />
-        </div>
-      )}
-      {Object.keys(messagesGroupByDate).map((date, indexDate) => (
-        <div key={date}>
-          <div className="section center-align green-text text-darken-4">{date}</div>
-          <div className="divider light-green lighten-3"></div>
-          {messagesGroupByDate[date].map((message, index) => (
-            <Message
-              key={message.id}
-              message={message}
-              onVisible={indexDate === 0 && index === 0 ? handleOnFirstVisibleMessage : undefined}
-            />
-          ))}
-        </div>
-      ))}
+    <WrapperMessageList>
+      <MessageListTitle>
+        <nav className="no-select top-nav light-green lighten-3 z-depth-3">
+          <div className="nav-wrapper container right-align">
+            <a href="#">
+              <i className="material-icons right green-text text-darken-4">phone</i>
+            </a>
+            <span className="flow-text green-text text-darken-4">{title}</span>
+          </div>
+        </nav>
+      </MessageListTitle>
+      <MessageListStyled ref={refMessageList}>
+        {isMoreMessageLoading && (
+          <div className="section center-align">
+            <Loader />
+          </div>
+        )}
+        {Object.keys(messagesGroupByDate).map((date, indexDate) => (
+          <div key={date}>
+            <div className="section center-align green-text text-darken-4">{date}</div>
+            <div className="divider light-green lighten-3" />
+            {messagesGroupByDate[date].map((message, index) => (
+              <Message
+                key={message.id}
+                message={message}
+                onVisible={indexDate === 0 && index === 0 ? handleOnFirstVisibleMessage : undefined}
+              />
+            ))}
+          </div>
+        ))}
+      </MessageListStyled>
     </WrapperMessageList>
   );
 };

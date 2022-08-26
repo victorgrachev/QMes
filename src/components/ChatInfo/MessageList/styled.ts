@@ -11,8 +11,19 @@ export const WrapperMessage = styled.div`
 
 export const WrapperMessageList = styled.div`
   flex: 1 1 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const MessageListTitle = styled.div`
+  flex: 0 0 auto;
+`;
+
+export const MessageListStyled = styled.div`
   overflow-y: auto;
   padding: 0 1rem;
+  flex: 1 1 100%;
 `;
 
 export const CardMessage = styled.div<TPropsCardMessage>`
